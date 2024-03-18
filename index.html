@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Laboratório</title>
+</head>
+<body>
+    <h1>Novo Laboratório</h1>
+    <div id="form-container">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome"><br><br>
+        <label for="capacidade">Capacidade:</label>
+        <input type="number" id="capacidade" name="capacidade"><br><br>
+        <label for="descricao">Descrição:</label><br>
+        <textarea id="descricao" name="descricao"></textarea><br><br>
+        <button id="submit-btn">Cadastrar</button>
+    </div>
+    <div id="mensagem"></div>
+
+    <script>
+        document.getElementById("submit-btn").addEventListener("click", function() {
+            const nome = document.getElementById("nome").value;
+            const capacidade = document.getElementById("capacidade").value;
+            const descricao = document.getElementById("descricao").value;
+
+            const novoLaboratorio = {
+                nome: nome,
+                capacidade: capacidade,
+                descricao: descricao
+            };
+
+            // Enviar os dados para o servidor no formato JSON
+            fetch('/laboratorio/novo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(novoLaboratorio)
+            })
+            .then(response => response.text())
+            .then(message => {
+                document.getElementById("mensagem").innerText = message;
+            })
+            .catch(error => {
+                console.error('Erro ao cadastrar laboratório:', error);
+                document.getElementById("mensagem").innerText = 'Erro ao cadastrar laboratório.';
+            });
+        });
+    </script>
+</body>
+</html>
